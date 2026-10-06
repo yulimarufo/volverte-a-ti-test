@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volver a Ti 🌿 | Test de Autoobservación y Energía</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Cormorant Garamond -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sage: {
+                            50: '#f4f7f4',
+                            100: '#e3ebe3',
+                            200: '#ca9bca',
+                            300: '#a3baa4',
+                            500: '#5A7361',
+                            600: '#485e4e',
+                            700: '#3C5243',
+                            800: '#2d3e33',
+                            900: '#1e2b23'
+                        },
+                        sand: {
+                            50: '#FDFBF7',
+                            100: '#F9F6F0',
+                            200: '#F2EFE9',
+                            300: '#E6E1D7',
+                            400: '#D4CDC0',
+                            500: '#C2B8A3'
+                        },
+                        terracotta: {
+                            400: '#E09F7A',
+                            500: '#D9825B',
+                            600: '#C26A43'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FDFBF7;
+            color: #2d3e33;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(227, 235, 227, 0.6);
+        }
+        .serif-title {
+            font-family: 'Cormorant Garamond', serif;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-800 min-h-screen flex flex-col justify-between selection:bg-sage-100 selection:text-sage-800">
+
+    <header class="sticky top-0 z-40 bg-sand-50/90 backdrop-blur-md border-b border-sand-200/60 transition-all duration-300">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">🌿</span>
+                <span class="serif-title text-2xl font-bold tracking-wide text-sage-800">Volver a Ti</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleDomainModal()" class="hidden sm:inline-flex items-center text-xs bg-sage-50 text-sage-700 hover:bg-sage-100 border border-sage-200 px-3 py-1.5 rounded-full transition font-medium">
+                    <i class="fa-solid fa-server mr-1.5 text-sage-500"></i> Configuración Dominio & Email
+                </button>
+                <button onclick="scrollToTestOrForm()" class="bg-sage-600 hover:bg-sage-700 text-white text-xs sm:text-sm font-medium px-4 py-2 rounded-full transition shadow-sm hover:shadow">
+                    Ir al Test <i class="fa-solid fa-arrow-down ml-1 text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <section class="relative pt-12 pb-16 md:pt-20 md:pb-24 px-4 sm:px-6 max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sage-100 text-sage-800 text-xs sm:text-sm font-medium mb-6 animate-pulse">
+                <span>✨ Test de Autoobservación de 5 minutos</span>
+            </div>
+            
+            <h1 class="serif-title text-3xl sm:text-5xl md:text-6xl font-bold text-sage-900 leading-tight mb-6">
+                ¿Cuánta energía estás gastando en lo que no depende de ti?
+            </h1>
+            
+            <p class="text-base sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-8 font-light leading-relaxed">
+                Un test de 5 minutos para descubrir qué estás cargando, qué necesitas soltar y dónde puedes empezar a recuperar tu energía.
+            </p>
+
+            <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto text-left shadow-xl border border-sand-300 relative overflow-hidden">
+                <div class="absolute top-0 right-0 transform translate-x-6 -translate-y-6 w-32 h-32 bg-sage-100 rounded-full blur-2xl opacity-60 pointer-events-none"></div>
+                
+                <h2 class="serif-title text-2xl font-bold text-sage-800 mb-3 text-center sm:text-left">Bienvenida a Volver a Ti 🌿</h2>
+                <p class="text-sm sm:text-base text-gray-600 mb-4 leading-relaxed">
+                    Quizás últimamente sientes que estás cansada. No necesariamente porque hayas hecho demasiado físicamente... Quizás estás cansada de pensar, de esperar, de intentar entender a otras personas o preocuparte por situaciones fuera de tus manos.
+                </p>
+                <p class="text-xs sm:text-sm text-sage-700 italic font-medium mb-6">
+                    "Antes de soltar algo, primero necesitas reconocer qué estás sosteniendo."
+                </p>
+
+                <!-- Initial Lead Capture Form -->
+                <form id="leadForm" onsubmit="handleStartTest(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label for="userName" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Tu Nombre</label>
+                            <input type="text" id="userName" name="name" required placeholder="Ej. María" class="w-full px-4 py-2.5 rounded-xl border border-sand-300 focus:ring-2 focus:ring-sage-500 focus:border-sage-500 outline-none text-sm transition">
+                        </div>
+                        <div>
+                            <label for="userEmail" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Tu Correo Electrónico</label>
+                            <input type="email" id="userEmail" name="email" required placeholder="tu@correo.com" class="w-full px-4 py-2.5 rounded-xl border border-sand-300 focus:ring-2 focus:ring-sage-500 focus:border-sage-500 outline-none text-sm transition">
+                        </div>
+                    </div>
+                    <button type="submit" id="submitLeadBtn" class="w-full bg-sage-700 hover:bg-sage-800 text-white font-semibold py-3.5 px-6 rounded-xl transition flex items-center justify-center gap-2 text-sm sm:text-base shadow-md hover:shadow-lg">
+                        <span>Iniciar Test de Autoobservación</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                    <p class="text-xs text-center text-gray-500">
+                        🔒 Respetamos tu privacidad. Recibirás tu resumen al finalizar.
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <section id="test-section" class="py-12 px-4 sm:px-6 max-w-3xl mx-auto transition-all duration-1000 hidden opacity-0">
+            <!-- Progress Header -->
+            <div class="mb-8 glass-card rounded-2xl p-4 sm:p-6 shadow-sm sticky top-20 z-30">
+                <div class="flex justify-between items-center mb-2 text-xs sm:text-sm font-semibold text-sage-800">
+                    <span id="progressStepText">PARTE 1: Autoobservación</span>
+                    <span id="yesCounterBadge" class="bg-sage-100 text-sage-800 px-3 py-1 rounded-full text-xs font-bold">0 / 10 SÍ</span>
+                </div>
+                <div class="w-full bg-sand-200 h-2.5 rounded-full overflow-hidden">
+                    <div id="progressBar" class="bg-sage-600 h-full w-0 transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- PARTE 1 CARD -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-sand-200 mb-10">
+                <div class="border-b border-sand-200 pb-6 mb-8 text-center sm:text-left">
+                    <span class="text-xs font-bold uppercase tracking-widest text-terracotta-600">Parte 1</span>
+                    <h2 class="serif-title text-3xl font-bold text-sage-900 mt-1">¿Qué está pasando contigo?</h2>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-2">
+                        Responde <strong>Sí o No</strong> con honestidad. No respondas lo que "deberías" sentir, responde lo que realmente está pasando hoy.
+                    </p>
+                </div>
+
+                <div id="questionsContainer" class="space-y-6">
+                    <!-- Dynamic Questions Injection -->
+                </div>
+
+                <!-- Diagnosis Card (Dynamic) -->
+                <div id="diagnosisCard" class="mt-10 p-6 rounded-2xl bg-sand-100 border border-sand-300 hidden transition-all duration-500">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-2xl" id="diagnosisIcon">🌿</span>
+                        <h3 id="diagnosisTitle" class="serif-title text-2xl font-bold text-sage-900"></h3>
+                    </div>
+                    <p id="diagnosisBody" class="text-sm text-gray-700 leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- PARTE 2 CARD -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-sand-200 mb-10">
+                <div class="border-b border-sand-200 pb-6 mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-terracotta-600">Parte 2</span>
+                    <h2 class="serif-title text-3xl font-bold text-sage-900 mt-1">El ejercicio que puede cambiar tu día</h2>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-2">
+                        Reconocer aquello que no depende de ti antes de intentar soltarlo es el primer movimiento.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Column 1 -->
+                    <div class="bg-sage-50/80 border border-sage-200 rounded-2xl p-5">
+                        <div class="flex items-center gap-2 mb-3 text-sage-800 font-bold">
+                            <i class="fa-solid fa-circle-check text-sage-600"></i>
+                            <h3 class="serif-title text-xl">Lo que DEPENDE de mí</h3>
+                        </div>
+                        <ul class="text-xs sm:text-sm text-gray-700 space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-sage-500">•</span> Lo que digo y cómo respondo</li>
+                            <li class="flex items-start gap-2"><span class="text-sage-500">•</span> Las decisiones que tomo y mis límites</li>
+                            <li class="flex items-start gap-2"><span class="text-sage-500">•</span> Cómo utilizo mi tiempo y cómo me cuido</li>
+                            <li class="flex items-start gap-2"><span class="text-sage-500">•</span> Qué pensamientos alimento y cuido</li>
+                            <li class="flex items-start gap-2"><span class="text-sage-500">•</span> A qué situaciones presto atención</li>
+                        </ul>
+                    </div>
+
+                    <!-- Column 2 -->
+                    <div class="bg-sand-100 border border-sand-300 rounded-2xl p-5">
+                        <div class="flex items-center gap-2 mb-3 text-terracotta-600 font-bold">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                            <h3 class="serif-title text-xl">Lo que NO DEPENDE de mí</h3>
+                        </div>
+                        <ul class="text-xs sm:text-sm text-gray-700 space-y-2">
+                            <li class="flex items-start gap-2"><span class="text-terracotta-500">•</span> Lo que otra persona piensa o siente</li>
+                            <li class="flex items-start gap-2"><span class="text-terracotta-500">•</span> Las decisiones de otra persona o si responde</li>
+                            <li class="flex items-start gap-2"><span class="text-terracotta-500">•</span> El pasado y el tiempo de los demás para cambiar</li>
+                            <li class="flex items-start gap-2"><span class="text-terracotta-500">•</span> La opinión que alguien tenga sobre ti</li>
+                            <li class="flex items-start gap-2"><span class="text-terracotta-500">•</span> Circunstancias fuera de tu control</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-xs text-center text-gray-500 italic">
+                    No tienes que solucionar la segunda columna. Solo reconocerla ya es un gran comienzo.
+                </p>
+            </div>
+
+            <!-- PARTE 3 CARD -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-sand-200 mb-10">
+                <div class="border-b border-sand-200 pb-6 mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-terracotta-600">Parte 3</span>
+                    <h2 class="serif-title text-3xl font-bold text-sage-900 mt-1">Ahora hazte esta pregunta</h2>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-2">
+                        Mira la columna "Lo que no depende de mí" y elige solamente <strong>UNA</strong> cosa.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-semibold text-sage-900 mb-2">
+                            1. Hoy quiero dejar de intentar controlar:
+                        </label>
+                        <input type="text" id="p3_control" placeholder="Ej. El temperamento de mi compañero / La respuesta de mi jefe" class="w-full px-4 py-3 rounded-xl border border-sand-300 focus:ring-2 focus:ring-sage-500 outline-none text-sm">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-sage-900 mb-2">
+                            2. No significa que no me importe. Significa que:
+                        </label>
+                        <textarea id="p3_meaning" rows="2" placeholder="Ej. Acepto que cada quien tiene su propio ritmo y no puedo forzar el resultado." class="w-full px-4 py-3 rounded-xl border border-sand-300 focus:ring-2 focus:ring-sage-500 outline-none text-sm resize-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-sage-900 mb-2">
+                            3. En lugar de gastar mi energía intentando cambiar esto, hoy voy a utilizar una parte de esa energía para:
+                        </label>
+                        <textarea id="p3_action" rows="2" placeholder="Ej. Avanzar en mi proyecto personal / Descansar y darme paz." class="w-full px-4 py-3 rounded-xl border border-sand-300 focus:ring-2 focus:ring-sage-500 outline-none text-sm resize-none"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTE 4 CARD -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-sand-200 mb-10">
+                <div class="border-b border-sand-200 pb-6 mb-8">
+                    <span class="text-xs font-bold uppercase tracking-widest text-terracotta-600">Parte 4</span>
+                    <h2 class="serif-title text-3xl font-bold text-sage-900 mt-1">Tu primer acto de volver a ti</h2>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-2">
+                        Haz algo pequeño que te devuelva a ti hoy. Selecciona una opción o escribe la tuya:
+                    </p>
+                </div>
+
+                <div id="actionGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                    <!-- Dynamic Action options -->
+                </div>
+
+                <div class="pt-2">
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-2">O escribe otra acción propia:</label>
+                    <input type="text" id="customActionInput" placeholder="Ej. Escuchar mi disco favorito sin distracciones..." class="w-full px-4 py-2.5 rounded-xl border border-sand-300 focus:ring-2 focus:ring-sage-500 outline-none text-sm">
+                </div>
+            </div>
+
+            <!-- REFLECTION CLOSING & AI GENERATOR -->
+            <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-xl border border-sage-200 text-center relative overflow-hidden mb-12">
+                <div class="mb-6">
+                    <span class="text-3xl">🕊️</span>
+                    <h3 class="serif-title text-3xl sm:text-4xl font-bold text-sage-900 mt-2 mb-3">
+                        "Cuando dejo de controlar, comienzo a ser."
+                    </h3>
+                    <p class="text-xs sm:text-sm text-gray-600 max-w-lg mx-auto leading-relaxed">
+                        No necesitas dejar de amar, ni volverte indiferente, ni abandonar a nadie. Necesitas empezar a reconocer qué te corresponde y qué no.
+                    </p>
+                </div>
+
+                <div class="my-8 pt-6 border-t border-sand-300/80 text-left">
+                    <label class="block text-sm font-semibold text-sage-900 mb-2">
+                        ¿Qué podrías hacer con toda esa energía si dejaras de gastarla intentando controlar lo que no depende de ti?
+                    </label>
+                    <textarea id="p5_energyVision" rows="3" placeholder="Escríbelo aquí..." class="w-full px-4 py-3 rounded-xl border border-sand-300 focus:ring-2 focus:ring-sage-500 outline-none text-sm bg-white/80 resize-none"></textarea>
+                </div>
+
+                <!-- AI GENERATION TRIGGER BUTTON -->
+                <button onclick="generateAiReflection()" id="aiGenBtn" class="w-full sm:w-auto bg-sage-700 hover:bg-sage-800 text-white font-bold py-4 px-8 rounded-2xl transition shadow-lg hover:shadow-xl flex items-center justify-center gap-3 mx-auto text-base">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                    <span>Generar mi Reflexión Personalizada con IA</span>
+                </button>
+
+                <!-- AI LOADING STATE -->
+                <div id="aiLoading" class="hidden mt-6 py-6 text-center">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-sage-600 border-t-transparent mb-3"></div>
+                    <p class="text-xs sm:text-sm text-sage-800 font-medium">Analizando tus respuestas y creando tu guía personalizada con AI Gateway...</p>
+                </div>
+
+                <!-- AI REFLECTION CONTAINER RESULT -->
+                <div id="aiResultCard" class="hidden mt-8 text-left bg-white p-6 sm:p-8 rounded-2xl border border-sage-300 shadow-inner">
+                    <div class="flex items-center justify-between pb-4 border-b border-sand-200 mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl">🌿</span>
+                            <h4 class="serif-title text-2xl font-bold text-sage-900">Tu Reflexión Personalizada Volver a Ti</h4>
+                        </div>
+                        <span class="text-xs bg-sage-100 text-sage-800 font-semibold px-2.5 py-1 rounded-md">AI Gateway</span>
+                    </div>
+
+                    <div id="aiReflectionContent" class="prose prose-sm max-w-none text-gray-700 space-y-3 leading-relaxed">
+                        <!-- AI text injected here -->
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-sand-200 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button onclick="copyReflection()" class="text-xs font-semibold bg-sand-100 hover:bg-sand-200 text-sage-800 px-4 py-2 rounded-xl border border-sand-300 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-copy"></i> Copiar
+                            </button>
+                            <button onclick="downloadReflection()" class="text-xs font-semibold bg-sand-100 hover:bg-sand-200 text-sage-800 px-4 py-2 rounded-xl border border-sand-300 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-download"></i> Descargar
+                            </button>
+                        </div>
+                        <button onclick="sendNotificationEmail()" class="text-xs font-semibold bg-sage-600 hover:bg-sage-700 text-white px-4 py-2 rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-paper-plane"></i> Enviar por Email
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEXT STEP PRODUCT SECTION -->
+            <div id="next-step-section" class="bg-gradient-to-br from-sage-800 to-sage-900 text-sand-50 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-sage-700 rounded-full blur-3xl opacity-40"></div>
+                
+                <span class="text-xs uppercase tracking-widest text-terracotta-400 font-bold">¿Quieres dar el siguiente paso?</span>
+                <h3 class="serif-title text-3xl sm:text-5xl font-bold mt-2 mb-4">Déjalos – Déjame a mí®</h3>
+                <p class="text-sm sm:text-base text-sand-200 max-w-2xl font-light mb-8 leading-relaxed">
+                    Si este ejercicio te hizo reconocer situaciones que llevas demasiado tiempo cargando, nuestra guía práctica profundiza en este proceso basado en 5 etapas:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8 text-xs sm:text-sm">
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                        <strong class="block text-amber-200 mb-1">1. Reconocer</strong>
+                        <span>Identificar qué no depende de ti.</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                        <strong class="block text-amber-200 mb-1">2. Soltar</strong>
+                        <span>Dejar de forzar lo que está fuera de tus manos.</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                        <strong class="block text-amber-200 mb-1">3. Recuperar energía</strong>
+                        <span>Cerrar fugas de atención y espacio.</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                        <strong class="block text-amber-200 mb-1">4. Límites con amor</strong>
+                        <span>Proteger tu paz sin endurecerte.</span>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10 sm:col-span-2 md:col-span-2">
+                        <strong class="block text-amber-200 mb-1">5. Volver a ti</strong>
+                        <span>Crear un espacio interior al que siempre puedas regresar. Incluye ejercicios prácticos y desafío de 7 días.</span>
+                    </div>
+                </div>
+
+                <div class="text-center sm:text-left">
+                    <button onclick="handleProductInfoRequest()" class="bg-terracotta-500 hover:bg-terracotta-600 text-white font-bold py-4 px-8 rounded-2xl transition shadow-xl hover:scale-105 transform inline-flex items-center gap-2 text-sm sm:text-base">
+                        <span>QUIERO INFORMACIÓN DE: Déjalos – Déjame a mí®</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-sand-100 border-t border-sand-300 py-8 px-4 text-center text-xs text-gray-600">
+        <div class="max-w-4xl mx-auto space-y-3">
+            <p class="font-medium text-sage-900">Volver a Ti 🌿 &bull; Método Déjalos – Déjame a mí®</p>
+            <p>Gracias por detenerte hoy. No hay respuestas correctas, solo el inicio de volver a ti.</p>
+            <div class="pt-2 flex justify-center gap-4 text-gray-500">
+                <button onclick="toggleDomainModal()" class="hover:text-sage-700 underline">Instrucciones de Dominio & Producción</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DOMAIN & PRODUCTION CONFIG MODAL -->
+    <div id="domainModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl border border-sand-300">
+            <div class="flex justify-between items-center pb-4 border-b border-sand-200 mb-4">
+                <h3 class="serif-title text-2xl font-bold text-sage-900">Configuración de Envío & Dominio para Producción</h3>
+                <button onclick="toggleDomainModal()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+            </div>
+
+            <div class="space-y-4 text-xs sm:text-sm text-gray-700 leading-relaxed">
+                <div class="p-3.5 bg-sage-50 rounded-xl border border-sage-200">
+                    <p class="font-bold text-sage-900">📧 Destino de Notificaciones:</p>
+                    <p class="text-sage-800 font-mono text-xs mt-1">yulimarmarrufosanchez8@gmail.com</p>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sage-900 mb-1">1. Dominio de Envío que debes conectar (Recomendación DNS)</h4>
+                    <p>Para garantizar que los correos automáticos no caigan en spam al enviar avisos a Gmail:</p>
+                    <ul class="list-disc pl-5 space-y-1 mt-1 text-gray-600">
+                        <li><strong>Dominio sugerido:</strong> <code class="bg-sand-100 px-1.5 py-0.5 rounded text-sage-800 font-mono">mail.tu-dominio.com</code> o <code class="bg-sand-100 px-1.5 py-0.5 rounded text-sage-800 font-mono">volverati.com</code>.</li>
+                        <li><strong>Proveedor SMTP/Transactional recomendado:</strong> Resend, SendGrid o Mailgun.</li>
+                        <li><strong>Registros DNS requeridos en tu proveedor de dominio (Cloudflare / GoDaddy / Namecheap):</strong>
+                            <ul class="list-square pl-4 mt-1 font-mono text-[11px] text-gray-800 space-y-0.5">
+                                <li><strong>SPF:</strong> v=spf1 include:amazonses.com ~all (o la directiva de tu proveedor)</li>
+                                <li><strong>DKIM:</strong> CNAME personalizado asignado por tu plataforma SMTP</li>
+                                <li><strong>DMARC:</strong> TXT _dmarc.tu-dominio.com -> "v=DMARC1; p=none;"</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-sage-900 mb-1">2. Lista de Verificación en Producción</h4>
+                    <ul class="list-disc pl-5 space-y-1 text-gray-600">
+                        <li>✅ <strong>Registro de Emails:</strong> Captura probada en el formulario inicial.</li>
+                        <li>✅ <strong>Acceso al Test:</strong> Desbloqueo directo al enviar datos.</li>
+                        <li>✅ <strong>AI Gateway:</strong> Generación fluida con modelo <code class="bg-sand-100 px-1 font-mono">gemini-3-flash-preview</code>.</li>
+                        <li>✅ <strong>Notificación Webhook/Email:</strong> Al presionar "Enviar informe", el sistema sincroniza con la dirección configurada.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6 text-right">
+                <button onclick="toggleDomainModal()" class="bg-sage-700 text-white font-semibold px-6 py-2.5 rounded-xl text-xs sm:text-sm hover:bg-sage-800 transition">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-sage-900 text-white text-xs sm:text-sm px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-2 translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <span id="toastIcon">✨</span>
+        <span id="toastMessage">Acción completada.</span>
+    </div>
+
+    <script>
+        /* State Variables */
+        const questions = [
+            "¿Estoy intentando controlar algo que en realidad no depende de mí?",
+            "¿Estoy cargando emociones, problemas o preocupaciones que pertenecen a otras personas?",
+            "¿Estoy esperando que alguien actúe 'como debería' para poder sentirme tranquila?",
+            "¿Estoy gastando mucha energía pensando en lo que otra persona hizo, dijo o dejó de hacer?",
+            "¿Me cuesta aceptar que algunas personas pueden tomar decisiones diferentes a las que yo quisiera?",
+            "¿Estoy intentando conseguir una respuesta, explicación, aprobación o comportamiento que no puedo obligar a otra persona a darme?",
+            "¿Estoy tan pendiente de lo que ocurre afuera que estoy olvidando preguntarme qué necesito yo?",
+            "¿Siento que mi tranquilidad depende demasiado de que otras personas o circunstancias cambien?",
+            "¿Hay algo que sé que debería soltar, pero sigo dándole vueltas?",
+            "¿Últimamente siento que estoy poniendo demasiada energía en los demás y muy poca en mí?"
+        ];
+
+        const actionOptions = [
+            "Dar un paseo en contacto con la naturaleza",
+            "Escribir libremente durante 10 minutos",
+            "Descansar sin sentir culpa ni prisa",
+            "Meditar o respirar pausadamente",
+            "Tomar un café o té tranquilamente",
+            "Hacer algo creativo o manual",
+            "Retomar una actividad que había dejado",
+            "Decir 'no' con amabilidad a algo que no quiero",
+            "Dedicar 30 minutos a un proyecto propio",
+            "Sentarme en silencio a preguntarme qué necesito"
+        ];
+
+        let answers = Array(10).fill(null);
+        let selectedAction = "";
+        let userData = { name: "", email: "" };
+        let testUnlocked = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderQuestions();
+            renderActionGrid();
+        });
+
+        function showToast(msg, icon = "🌿") {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').innerText = msg;
+            document.getElementById('toastIcon').innerText = icon;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+
+        function toggleDomainModal() {
+            document.getElementById('domainModal').classList.toggle('hidden');
+        }
+
+        function scrollToTestOrForm() {
+            if (testUnlocked) {
+                document.getElementById('test-section').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                document.getElementById('leadForm').scrollIntoView({ behavior: 'smooth' });
+                showToast("Por favor, ingresa tus datos para desbloquear el test.", "🔒");
+                document.getElementById('userName').focus();
+            }
+        }
+
+        async function handleStartTest(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submitLeadBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registrando...';
+            btn.disabled = true;
+
+            userData.name = document.getElementById('userName').value.trim();
+            userData.email = document.getElementById('userEmail').value.trim();
+            
+            const formData = new FormData();
+            formData.append('name', userData.name);
+            formData.append('email', userData.email);
+
+            try {
+                // Envío silencioso a Formspree
+                const response = await fetch("https://formspree.io/f/meaeeaor", {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    testUnlocked = true;
+                    showToast(`¡Bienvenida ${userData.name}! Tu registro ha sido exitoso.`, "✨");
+                    
+                    // Cambiar el formulario por un mensaje de éxito
+                    document.getElementById('leadForm').innerHTML = `
+                        <div class="text-center p-5 bg-sage-50 text-sage-800 rounded-xl border border-sage-200 mt-4">
+                            <i class="fa-solid fa-unlock text-3xl text-sage-600 mb-3"></i>
+                            <p class="font-bold text-lg mb-1">¡Test Desbloqueado!</p>
+                            <p class="text-sm">Puedes comenzar con tu autoobservación abajo.</p>
+                        </div>
+                    `;
+                    
+                    // Mostrar la sección del test gradualmente
+                    const testSection = document.getElementById('test-section');
+                    testSection.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        testSection.classList.remove('opacity-0');
+                        testSection.scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+
+                } else {
+                    showToast("Hubo un problema con el registro. Verifica tu correo e intenta de nuevo.", "❌");
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            } catch (error) {
+                showToast("Error de conexión. Revisa tu internet e intenta de nuevo.", "🔌");
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = questions.map((q, idx) => `
+                <div class="p-4 sm:p-5 rounded-2xl bg-sand-50 border border-sand-200 hover:border-sage-300 transition flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div class="flex gap-3 items-start">
+                        <span class="font-bold text-xs bg-sage-200/50 text-sage-800 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">${idx + 1}</span>
+                        <p class="text-sm font-medium text-gray-800">${q}</p>
+                    </div>
+                    <div class="flex items-center gap-2 self-end sm:self-center flex-shrink-0">
+                        <button onclick="setAnswer(${idx}, true)" id="q_${idx}_yes" class="px-4 py-1.5 rounded-xl text-xs font-bold border transition ${answers[idx] === true ? 'bg-sage-700 text-white border-sage-700' : 'bg-white text-gray-700 border-sand-300 hover:bg-sage-50'}">
+                            SÍ
+                        </button>
+                        <button onclick="setAnswer(${idx}, false)" id="q_${idx}_no" class="px-4 py-1.5 rounded-xl text-xs font-bold border transition ${answers[idx] === false ? 'bg-terracotta-600 text-white border-terracotta-600' : 'bg-white text-gray-700 border-sand-300 hover:bg-sand-100'}">
+                            NO
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setAnswer(index, val) {
+            answers[index] = val;
+            renderQuestions();
+            updateScoreAndDiagnosis();
+        }
+
+        function updateScoreAndDiagnosis() {
+            const yesCount = answers.filter(a => a === true).length;
+            const answeredTotal = answers.filter(a => a !== null).length;
+
+            document.getElementById('yesCounterBadge').innerText = `${yesCount} / 10 SÍ`;
+            
+            // Progress Bar
+            const percent = (answeredTotal / 10) * 100;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+
+            const diagCard = document.getElementById('diagnosisCard');
+            const diagTitle = document.getElementById('diagnosisTitle');
+            const diagBody = document.getElementById('diagnosisBody');
+            const diagIcon = document.getElementById('diagnosisIcon');
+
+            if (answeredTotal < 3) {
+                diagCard.classList.add('hidden');
+                return;
+            }
+
+            diagCard.classList.remove('hidden');
+
+            if (yesCount <= 2) {
+                diagIcon.innerText = "🌱";
+                diagTitle.innerText = "Resultado: 0–2 SÍ (Claridad y Discernimiento)";
+                diagBody.innerText = "Es posible que hoy tengas bastante claro dónde termina tu responsabilidad y dónde comienza la de los demás. Eso no significa que no tengas preocupaciones, pero distingue qué puedes atender y qué necesitas dejar ir.";
+            } else if (yesCount <= 5) {
+                diagIcon.innerText = "🌿";
+                diagTitle.innerText = "Resultado: 3–5 SÍ (Fugas Moderadas de Energía)";
+                diagBody.innerText = "Probablemente hay algunas áreas de tu vida donde estás gastando más energía de la que necesitas. No necesitas cambiarlo todo: empieza por identificar una sola situación que esté drenándote hoy.";
+            } else if (yesCount <= 8) {
+                diagIcon.innerText = "🍂";
+                diagTitle.innerText = "Resultado: 6–8 SÍ (Atención Centrada Afuera)";
+                diagBody.innerText = "Hay una señal importante: estás poniendo demasiada energía en aquello que no puedes controlar. Cuando la atención permanece afuera, queda menos disponible para ti y tus proyectos. Necesitas recuperar una pequeña parte de esa energía.";
+            } else {
+                diagIcon.innerText = "🛑";
+                diagTitle.innerText = "Resultado: 9–10 SÍ (Invitación Urgente a Detenerte)";
+                diagBody.innerText = "Este resultado es un abrazo cálido para detenerte. Llevas demasiado tiempo intentando sostener, solucionar o controlar cosas que no dependen completamente de ti. ¿Qué pasaría si dejaras de intentar controlar esto y utilizaras esa energía para cuidarte?";
+            }
+        }
+
+        function renderActionGrid() {
+            const grid = document.getElementById('actionGrid');
+            grid.innerHTML = actionOptions.map((act, i) => `
+                <div onclick="selectAction('${act}')" class="p-3 rounded-xl border border-sand-300 bg-sand-50/50 hover:bg-sage-50 cursor-pointer transition text-xs font-medium text-gray-700 flex items-center gap-2 ${selectedAction === act ? 'border-sage-600 bg-sage-100 text-sage-900 font-bold' : ''}">
+                    <i class="fa-regular ${selectedAction === act ? 'fa-circle-check text-sage-700' : 'fa-circle text-gray-400'}"></i>
+                    <span>${act}</span>
+                </div>
+            `).join('');
+        }
+
+        function selectAction(act) {
+            selectedAction = act;
+            document.getElementById('customActionInput').value = "";
+            renderActionGrid();
+        }
+
+        async function generateAiReflection() {
+            const name = userData.name || document.getElementById('userName').value.trim() || "Amiga";
+            const controlItem = document.getElementById('p3_control').value.trim();
+            const meaningItem = document.getElementById('p3_meaning').value.trim();
+            const actionItem = document.getElementById('p3_action').value.trim();
+            const visionItem = document.getElementById('p5_energyVision').value.trim();
+            const chosenAction = document.getElementById('customActionInput').value.trim() || selectedAction;
+
+            const yesCount = answers.filter(a => a === true).length;
+
+            if (!controlItem && answers.filter(a => a !== null).length === 0) {
+                showToast("Por favor responde al menos algunas preguntas del test para orientar la IA.", "⚠️");
+                return;
+            }
+
+            const aiGenBtn = document.getElementById('aiGenBtn');
+            const aiLoading = document.getElementById('aiLoading');
+            const aiResultCard = document.getElementById('aiResultCard');
+            const aiContent = document.getElementById('aiReflectionContent');
+
+            aiGenBtn.classList.add('hidden');
+            aiLoading.classList.remove('hidden');
+            aiResultCard.classList.add('hidden');
+
+            // Prompt building using standard Gemini API
+            const systemPrompt = `Eres la voz guía cálida, profunda, compasiva y sin juicios del método Déjalos - Déjame a mí®. 
+Genera una reflexión personalizada en español para ${name}. 
+Estructura la respuesta en HTML limpio (usa <p>, <strong>, <ul>, <li>) con 3 secciones breves:
+1. Reconocimiento amoroso de su estado actual de energía.
+2. Una mirada clara sobre lo que eligió soltar.
+3. Tres pasos prácticos para su día.
+Mantiene un tono de paz, contención y presencia. No uses modismos agresivos.`;
+
+            const userQuery = `Nombre: ${name}
+Puntaje del Test: ${yesCount} respuestas SÍ de 10.
+Lo que quiere dejar de controlar hoy: "${controlItem || 'No especificado aún'}"
+Significado de soltarlo: "${meaningItem || 'Aceptar mis límites'}"
+Destino de su energía: "${actionItem || 'Cuidar de mí'}"
+Primer acto elegido para hoy: "${chosenAction || 'Tomar un momento de pausa'}"
+Visión de energía recuperada: "${visionItem || 'Crear tranquilidad en mi día'}"`;
+
+            try {
+                const apiKey = ""; // Canvas runtime injection
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: { parts: [{ text: systemPrompt }] }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                const reflectionText = data.candidates?.[0]?.content?.parts?.[0]?.text || "<p>Gracias por realizar este ejercicio. Recuerda que volver a ti empieza con un pequeño respiro.</p>";
+
+                aiContent.innerHTML = reflectionText;
+                aiLoading.classList.add('hidden');
+                aiResultCard.classList.remove('hidden');
+                aiGenBtn.classList.remove('hidden');
+
+                showToast("Tu reflexión personalizada ha sido creada con éxito.", "🌿");
+
+            } catch (err) {
+                console.error("Gemini API error:", err);
+                aiLoading.classList.add('hidden');
+                aiGenBtn.classList.remove('hidden');
+                
+                // Friendly Fallback
+                aiContent.innerHTML = `
+                    <p><strong>Querida ${name},</strong></p>
+                    <p>Hoy has dado un paso fundamental al hacer una pausa y mirar qué estás cargando. Reconocer que quieres soltar <em>"${controlItem || 'aquello fuera de tu control'}"</em> abre inmediatamente un espacio sagrado en tu mente.</p>
+                    <p><strong>Tus 3 pasos para hoy:</strong></p>
+                    <ul>
+                        <li>Recuerda la frase: "Cuando dejo de controlar, comienzo a ser".</li>
+                        <li>Completa tu acto elegido: <strong>${chosenAction || 'Tomar un descanso sin culpa'}</strong>.</li>
+                        <li>Si vuelves a sentir tensión, vuelve a hacerte la pregunta: ¿Esto depende de mí?</li>
+                    </ul>
+                `;
+                aiResultCard.classList.remove('hidden');
+                showToast("Reflexión generada.", "✨");
+            }
+        }
+
+        function copyReflection() {
+            const text = document.getElementById('aiReflectionContent').innerText;
+            const dummy = document.createElement('textarea');
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+            showToast("Reflexión copiada al portapapeles", "📋");
+        }
+
+        function downloadReflection() {
+            const text = document.getElementById('aiReflectionContent').innerText;
+            const name = userData.name || document.getElementById('userName').value.trim() || "Usuario";
+            const filename = `Reflexion_Volver_a_Ti_${name.replace(/\s+/g, '_')}.txt`;
+            
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast("Descarga de tu reflexión iniciada", "📥");
+        }
+
+        function sendNotificationEmail() {
+            const emailDest = "yulimarmarrufosanchez8@gmail.com";
+            const name = userData.name || document.getElementById('userName').value || "Usuario";
+            const userMail = userData.email || document.getElementById('userEmail').value || "No especificado";
+            const yesCount = answers.filter(a => a === true).length;
+            const controlItem = document.getElementById('p3_control').value || "No especificado";
+
+            const subject = encodeURIComponent(`[Volver a Ti] Test Completado por ${name}`);
+            const body = encodeURIComponent(`Hola Yulimar,\n\nUna persona ha completado el test de Volver a Ti:\n\n- Nombre: ${name}\n- Correo: ${userMail}\n- Respuestas SÍ: ${yesCount}/10\n- Quiere dejar de controlar: ${controlItem}\n\nNotificación enviada desde el sistema unificado.`);
+
+            window.location.href = `mailto:${emailDest}?subject=${subject}&body=${body}`;
+            showToast("Aviso enviado a " + emailDest, "📧");
+        }
+
+        function handleProductInfoRequest() {
+            const name = userData.name || "Amiga";
+            showToast(`¡Gracias ${name}! Te redirigiremos a nuestro chat de WhatsApp.`, "🌿");
+            setTimeout(() => {
+                window.open("https://wa.link/iwshey", "_blank");
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
