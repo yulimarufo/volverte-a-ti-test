@@ -642,94 +642,95 @@
             renderActionGrid();
         }
 
-        async function generateAiReflection() {
-            const name = userData.name || document.getElementById('userName').value.trim() || "Amiga";
-            const controlItem = document.getElementById('p3_control').value.trim();
-            const meaningItem = document.getElementById('p3_meaning').value.trim();
-            const actionItem = document.getElementById('p3_action').value.trim();
-            const visionItem = document.getElementById('p5_energyVision').value.trim();
-            const chosenAction = document.getElementById('customActionInput').value.trim() || selectedAction;
 
-            const yesCount = answers.filter(a => a === true).length;
+function generateAiReflection() {
+    const name = userData.name ||
+        document.getElementById('userName').value.trim() ||
+        "Amiga";
 
-            if (!controlItem && answers.filter(a => a !== null).length === 0) {
-                showToast("Por favor responde al menos algunas preguntas del test para orientar la IA.", "⚠️");
-                return;
-            }
+    const control = document.getElementById('p3_control').value.trim();
+    const meaning = document.getElementById('p3_meaning').value.trim();
+    const action = document.getElementById('p3_action').value.trim();
+    const vision = document.getElementById('p5_energyVision').value.trim();
+    const chosenAction =
+        document.getElementById('customActionInput').value.trim() ||
+        selectedAction;
 
-            const aiGenBtn = document.getElementById('aiGenBtn');
-            const aiLoading = document.getElementById('aiLoading');
-            const aiResultCard = document.getElementById('aiResultCard');
-            const aiContent = document.getElementById('aiReflectionContent');
+    const answered = answers.filter(a => a !== null).length;
+    const yesCount = answers.filter(a => a === true).length;
 
-            aiGenBtn.classList.add('hidden');
-            aiLoading.classList.remove('hidden');
-            aiResultCard.classList.add('hidden');
+    if (answered < 10) {
+        showToast("Responde las 10 preguntas para obtener tu reflexión.", "🌿");
+        return;
+    }
 
-            // Prompt building using standard Gemini API
-            const systemPrompt = `Eres la voz guía cálida, profunda, compasiva y sin juicios del método Déjalos - Déjame a mí®. 
-Genera una reflexión personalizada en español para ${name}. 
-Estructura la respuesta en HTML limpio (usa <p>, <strong>, <ul>, <li>) con 3 secciones breves:
-1. Reconocimiento amoroso de su estado actual de energía.
-2. Una mirada clara sobre lo que eligió soltar.
-3. Tres pasos prácticos para su día.
-Mantiene un tono de paz, contención y presencia. No uses modismos agresivos.`;
+    if (!control && !meaning && !action && !vision && !chosenAction) {
+        showToast("Completa al menos una parte del ejercicio para personalizar tu reflexión.", "🌿");
+        return;
+    }
 
-            const userQuery = `Nombre: ${name}
-Puntaje del Test: ${yesCount} respuestas SÍ de 10.
-Lo que quiere dejar de controlar hoy: "${controlItem || 'No especificado aún'}"
-Significado de soltarlo: "${meaningItem || 'Aceptar mis límites'}"
-Destino de su energía: "${actionItem || 'Cuidar de mí'}"
-Primer acto elegido para hoy: "${chosenAction || 'Tomar un momento de pausa'}"
-Visión de energía recuperada: "${visionItem || 'Crear tranquilidad en mi día'}"`;
+    let interpretation = "";
+    let guidance = "";
 
-            try {
-                const apiKey = ""; // Canvas runtime injection
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+    if (yesCount <= 2) {
+        interpretation = "Hoy parece que tienes bastante claridad para distinguir lo que depende de ti de aquello que no puedes controlar. Puedes seguir fortaleciendo esa capacidad sin exigirte tener todo resuelto.";
+        guidance = "Observa qué te ayuda a mantener esa claridad y dedica tu energía a una decisión pequeña que sí esté en tus manos.";
+    } else if (yesCount <= 5) {
+        interpretation = "Tus respuestas sugieren que hay algunas situaciones que están ocupando más espacio mental del que te gustaría. No necesitas resolverlo todo hoy: empezar por una sola situación puede marcar una diferencia.";
+        guidance = "Cuando notes que vuelves a darle vueltas a algo, pregúntate qué parte depende de ti y cuál puedes dejar de intentar controlar.";
+    } else if (yesCount <= 8) {
+        interpretation = "Tus respuestas sugieren que una parte importante de tu energía podría estar concentrada en otras personas o en circunstancias que no controlas por completo. Esto puede resultar agotador, especialmente cuando esperas que algo externo cambie para poder sentir tranquilidad.";
+        guidance = "Empieza por recuperar una pequeña parte de tu atención. Elige una acción que esté en tus manos y que te acerque a lo que necesitas hoy.";
+    } else {
+        interpretation = "Tus respuestas indican que podrías estar cargando con muchas preocupaciones y tratando de sostener situaciones que no dependen completamente de ti. No es un juicio ni una etiqueta: es una invitación a detenerte y tratarte con más amabilidad.";
+        guidance = "Hoy no tienes que solucionarlo todo. Identifica una sola cosa que no puedes controlar y elige una manera concreta de cuidarte en medio de esa situación.";
+    }
 
-                const payload = {
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] }
-                };
+    const safe = value => String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    }[char]));
 
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+    const reflection = `
+        <p><strong>Querida ${safe(name)},</strong></p>
+        <p>Gracias por detenerte y mirar honestamente dónde estás poniendo tu energía.</p>
+        <p>${interpretation}</p>
+        <p><strong>Lo que hoy quieres soltar</strong></p>
+        <p>${control
+            ? "Has identificado esto: <em>“" + safe(control) + "”</em>."
+            : "Date permiso para reconocer qué situación está ocupando tu atención."}
+        ${meaning ? " Para ti, soltar significa: " + safe(meaning) + "." : ""}
+        </p>
+        <p>Soltar no significa que algo no te importe. Significa reconocer los límites de tu control y decidir cómo quieres responder.</p>
+        <p><strong>Tres pasos para hoy</strong></p>
+        <ul>
+            <li>Recuérdate: “Cuando dejo de controlar, comienzo a ser”.</li>
+            <li>${guidance}</li>
+            <li>Da un pequeño paso que dependa de ti: ${safe(
+                chosenAction || action || "dedica unos minutos a una necesidad tuya"
+            )}.</li>
+        </ul>
+        ${action ? "<p>Tu intención para hoy es: <em>" + safe(action) + "</em>.</p>" : ""}
+        ${vision ? "<p><strong>Lo que quieres recuperar:</strong> " + safe(vision) + ". Guarda esa intención como recordatorio de hacia dónde quieres dirigir tu energía.</p>" : ""}
+        <p>No necesitas cambiar toda tu vida en un día. Puedes comenzar con una decisión pequeña, consciente y tuya.</p>
+        <p><strong>Hoy, volver a ti puede empezar por aquí.</strong> 🌿</p>
+    `;
 
-                const data = await response.json();
-                const reflectionText = data.candidates?.[0]?.content?.parts?.[0]?.text || "<p>Gracias por realizar este ejercicio. Recuerda que volver a ti empieza con un pequeño respiro.</p>";
+    document.getElementById('aiLoading').classList.add('hidden');
+    document.getElementById('aiReflectionContent').innerHTML = reflection;
+    document.getElementById('aiResultCard').classList.remove('hidden');
+    document.getElementById('aiGenBtn').classList.remove('hidden');
 
-                aiContent.innerHTML = reflectionText;
-                aiLoading.classList.add('hidden');
-                aiResultCard.classList.remove('hidden');
-                aiGenBtn.classList.remove('hidden');
+    showToast("Tu reflexión personalizada está lista.", "🌿");
 
-                showToast("Tu reflexión personalizada ha sido creada con éxito.", "🌿");
-
-            } catch (err) {
-                console.error("Gemini API error:", err);
-                aiLoading.classList.add('hidden');
-                aiGenBtn.classList.remove('hidden');
-                
-                // Friendly Fallback
-                aiContent.innerHTML = `
-                    <p><strong>Querida ${name},</strong></p>
-                    <p>Hoy has dado un paso fundamental al hacer una pausa y mirar qué estás cargando. Reconocer que quieres soltar <em>"${controlItem || 'aquello fuera de tu control'}"</em> abre inmediatamente un espacio sagrado en tu mente.</p>
-                    <p><strong>Tus 3 pasos para hoy:</strong></p>
-                    <ul>
-                        <li>Recuerda la frase: "Cuando dejo de controlar, comienzo a ser".</li>
-                        <li>Completa tu acto elegido: <strong>${chosenAction || 'Tomar un descanso sin culpa'}</strong>.</li>
-                        <li>Si vuelves a sentir tensión, vuelve a hacerte la pregunta: ¿Esto depende de mí?</li>
-                    </ul>
-                `;
-                aiResultCard.classList.remove('hidden');
-                showToast("Reflexión generada.", "✨");
-            }
-        }
-
-        function copyReflection() {
+    document.getElementById('aiResultCard').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+} {
             const text = document.getElementById('aiReflectionContent').innerText;
             const dummy = document.createElement('textarea');
             document.body.appendChild(dummy);
